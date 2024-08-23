@@ -2,12 +2,12 @@ Source: python3-cyberfusion-systemd-support
 Section: misc
 Priority: optional
 Maintainer: William Edwards <wedwards@cyberfusion.nl>
-Build-Depends: python3-all, dh-python, debhelper (>= 10), python3-setuptools
+Build-Depends: python3-all, dh-python, debhelper (>= 10), python3-setuptools, python3-cyberfusion-common
 Standards-Version: 4.3.0
 
 Package: python3-cyberfusion-systemd-support
 Architecture: all
 Suggests: systemd
-Depends: python3, python3-cyberfusion-common, ${misc:Depends}
+Depends: python3, ${python3:Depends}, ${misc:Depends}
 Description: Library for systemd.
  Library for systemd.
