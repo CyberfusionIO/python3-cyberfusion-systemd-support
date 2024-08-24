@@ -34,9 +34,7 @@ class Unit:
 
     SUFFIX_SERVICE = "service"
 
-    DIRECTORY_SYSTEMD_OVERRIDE = os.path.join(
-        os.path.sep, "etc", "systemd", "system"
-    )
+    DIRECTORY_SYSTEMD_OVERRIDE = os.path.join(os.path.sep, "etc", "systemd", "system")
 
     def __init__(self, name: str) -> None:
         """Set attributes."""
@@ -59,9 +57,7 @@ class Unit:
     @property
     def drop_in_directory(self) -> str:
         """Get path to drop-in directory."""
-        return os.path.join(
-            os.path.sep, "etc", "systemd", "system", self.name + ".d"
-        )
+        return os.path.join(os.path.sep, "etc", "systemd", "system", self.name + ".d")
 
     @property
     def needs_reload(self) -> bool:

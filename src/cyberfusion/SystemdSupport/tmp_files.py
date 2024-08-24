@@ -16,9 +16,7 @@ class TmpFileConfigurationFile:
 
     def create(self) -> None:
         """Create tmp files."""
-        subprocess.run(
-            [SYSTEMCTL_TMPFILES_BIN, "--create", self.path], check=True
-        )
+        subprocess.run([SYSTEMCTL_TMPFILES_BIN, "--create", self.path], check=True)
 
 
 class TmpFileConfigurationLine:
