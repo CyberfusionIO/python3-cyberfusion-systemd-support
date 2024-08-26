@@ -10,12 +10,6 @@ Run the following command to install the package from PyPI:
 
     pip3 install python3-cyberfusion-systemd-support
 
-## Generic
-
-Run the following command to create a source distribution:
-
-    python3 setup.py sdist
-
 Next, ensure you are working on a system that ships systemd.
 
 ## Debian
