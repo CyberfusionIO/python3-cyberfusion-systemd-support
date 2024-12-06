@@ -58,7 +58,7 @@ class Unit:
     @property
     def drop_in_directory(self) -> str:
         """Get path to drop-in directory."""
-        return os.path.join(os.path.sep, "etc", "systemd", "system", self.name + ".d")
+        return self.get_drop_in_directory(self.name)
 
     @property
     def needs_reload(self) -> bool:
@@ -136,3 +136,8 @@ class Unit:
             return False
 
         return True
+
+    @staticmethod
+    def get_drop_in_directory(unit_name: str) -> str:
+        """Get unit override directory."""
+        return os.path.join(BASE_DIRECTORY_SYSTEMD_UNITS, unit_name + ".d")
