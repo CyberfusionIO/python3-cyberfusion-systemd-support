@@ -12,6 +12,9 @@ from cyberfusion.SystemdSupport.manager import SystemdManager
 F = TypeVar("F", bound=Callable[..., None])
 
 
+BASE_DIRECTORY_SYSTEMD_UNITS = os.path.join(os.path.sep, "etc", "systemd", "system")
+
+
 def reload_manager(f: F) -> F:
     """Reload manager configuration if needed.."""
 
@@ -34,8 +37,6 @@ class Unit:
 
     SUFFIX_SERVICE = "service"
 
-    DIRECTORY_SYSTEMD_OVERRIDE = os.path.join(os.path.sep, "etc", "systemd", "system")
-
     def __init__(self, name: str) -> None:
         """Set attributes."""
         self.name = name
@@ -57,7 +58,7 @@ class Unit:
     @property
     def drop_in_directory(self) -> str:
         """Get path to drop-in directory."""
-        return os.path.join(os.path.sep, "etc", "systemd", "system", self.name + ".d")
+        return self.get_drop_in_directory(self.name)
 
     @property
     def needs_reload(self) -> bool:
@@ -135,3 +136,8 @@ class Unit:
             return False
 
         return True
+
+    @staticmethod
+    def get_drop_in_directory(unit_name: str) -> str:
+        """Get unit override directory."""
+        return os.path.join(BASE_DIRECTORY_SYSTEMD_UNITS, unit_name + ".d")
