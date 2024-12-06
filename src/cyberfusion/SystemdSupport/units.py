@@ -12,6 +12,9 @@ from cyberfusion.SystemdSupport.manager import SystemdManager
 F = TypeVar("F", bound=Callable[..., None])
 
 
+BASE_DIRECTORY_SYSTEMD_UNITS = os.path.join(os.path.sep, "etc", "systemd", "system")
+
+
 def reload_manager(f: F) -> F:
     """Reload manager configuration if needed.."""
 
@@ -33,8 +36,6 @@ class Unit:
     """Represents unit."""
 
     SUFFIX_SERVICE = "service"
-
-    DIRECTORY_SYSTEMD_OVERRIDE = os.path.join(os.path.sep, "etc", "systemd", "system")
 
     def __init__(self, name: str) -> None:
         """Set attributes."""
