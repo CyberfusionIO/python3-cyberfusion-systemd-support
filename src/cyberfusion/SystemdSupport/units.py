@@ -109,6 +109,14 @@ class Unit:
         subprocess.run([SYSTEMCTL_BIN, "restart", self.name], check=True)
 
     @reload_manager
+    def start(self) -> None:
+        """Start unit."""
+        if self.is_active:
+            return
+
+        subprocess.run([SYSTEMCTL_BIN, "start", self.name], check=True)
+
+    @reload_manager
     def reload(self) -> None:
         """Reload unit."""
         subprocess.run([SYSTEMCTL_BIN, "reload", self.name], check=True)

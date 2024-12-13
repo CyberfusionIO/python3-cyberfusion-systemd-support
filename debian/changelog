@@ -1,3 +1,9 @@
+python3-cyberfusion-systemd-support (2.1.0) unstable; urgency=low
+
+  - Add Unit.start
+
+ -- William Edwards <wedwards@cyberfusion.nl>  Fri, 13 Dec 2024 11:20:00 +0200
+
 python3-cyberfusion-systemd-support (2.0.0) unstable; urgency=low
 
   - Breaking changes:
