@@ -149,3 +149,19 @@ class Unit:
     def get_drop_in_directory(unit_name: str) -> str:
         """Get unit override directory."""
         return os.path.join(BASE_DIRECTORY_SYSTEMD_UNITS, unit_name + ".d")
+
+    @staticmethod
+    def remove_unit_type(unit_name: str) -> str:
+        """Remove unit type from unit name.
+
+        E.g.: `firewall.service` -> `firewall`
+        """
+        return unit_name.rsplit(".", 1)[0]
+
+    @staticmethod
+    def add_unit_type(unit_name: str, unit_type: str) -> str:
+        """Add unit type to unit name.
+
+        E.g.: `firewall` -> `firewall.service`
+        """
+        return unit_name + "." + unit_type
