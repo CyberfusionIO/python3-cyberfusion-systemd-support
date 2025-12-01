@@ -40,6 +40,7 @@ unit.reload()
 
 print(unit.is_active)
 print(unit.is_enabled)
+print(unit.is_failed)
 ```
 
 ## Tmp files

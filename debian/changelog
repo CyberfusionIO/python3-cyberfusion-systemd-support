@@ -1,3 +1,9 @@
+python3-cyberfusion-systemd-support (2.3.0) unstable; urgency=low
+
+  - Add `is_failed` method to `Unit`
+
+ -- Mika Scheer <mscheer@cyberfusion.io>  Mon, 01 Dec 2025 16:13:00 +0200
+
 python3-cyberfusion-systemd-support (2.2.0) unstable; urgency=low
 
   - Add unit type helpers: `Unit.remove_unit_type` + `Unit.add_unit_type`

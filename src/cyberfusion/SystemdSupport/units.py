@@ -145,6 +145,18 @@ class Unit:
 
         return True
 
+    @property
+    def is_failed(self) -> bool:
+        """Get if unit is enabled."""
+        try:
+            subprocess.run(
+                [SYSTEMCTL_BIN, "is-failed", "--quiet", self.name], check=True
+            )
+        except subprocess.CalledProcessError:
+            return False
+
+        return True
+
     @staticmethod
     def get_drop_in_directory(unit_name: str) -> str:
         """Get unit override directory."""
