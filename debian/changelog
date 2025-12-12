@@ -1,3 +1,9 @@
+python3-cyberfusion-systemd-support (2.3.1) unstable; urgency=low
+
+  - Update to Trixie
+
+ -- William Edwards <wedwards@cyberfusion.nl>  Fri, 12 Dec 2025 18:40:00 +0200
+
 python3-cyberfusion-systemd-support (2.3.0) unstable; urgency=low
 
   - Add `is_failed` method to `Unit`
