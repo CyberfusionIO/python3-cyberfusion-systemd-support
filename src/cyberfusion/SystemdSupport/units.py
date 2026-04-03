@@ -160,7 +160,12 @@ class Unit:
     @staticmethod
     def get_drop_in_directory(unit_name: str) -> str:
         """Get unit override directory."""
-        return os.path.join(BASE_DIRECTORY_SYSTEMD_UNITS, unit_name + ".d")
+        return Unit.get_unit_file(unit_name) + ".d"
+
+    @staticmethod
+    def get_unit_file(unit_name: str) -> str:
+        """Get unit file."""
+        return os.path.join(BASE_DIRECTORY_SYSTEMD_UNITS, unit_name)
 
     @staticmethod
     def remove_unit_type(unit_name: str) -> str:
