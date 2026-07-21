@@ -43,6 +43,15 @@ print(unit.is_enabled)
 print(unit.is_failed)
 ```
 
+## Transient units
+
+```python
+from cyberfusion.SystemdSupport.units import TransientUnit
+
+transient_unit = TransientUnit.run(name="cf-apt-upgrade", command=["apt-get", "upgrade", "-y"])
+transient_unit.clean_up()
+```
+
 ## Tmp files
 
 ```python

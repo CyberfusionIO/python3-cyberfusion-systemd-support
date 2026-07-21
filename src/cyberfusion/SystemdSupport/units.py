@@ -1,18 +1,26 @@
 """Classes for systemd units."""
 
 import glob
+import json
 import os
 import subprocess
 from functools import wraps
-from typing import Callable, Optional, TypeVar, cast
+from typing import Callable, List, Optional, TypeVar, cast
 
 from cyberfusion.SystemdSupport._constants import SYSTEMCTL_BIN
+from cyberfusion.SystemdSupport.exceptions import (
+    UnexpectedActiveStateError,
+    UnexpectedSubStateError,
+)
 from cyberfusion.SystemdSupport.manager import SystemdManager
+from cyberfusion.SystemdSupport.enums import ActiveState, SubState
 
 F = TypeVar("F", bound=Callable[..., None])
 
 
 BASE_DIRECTORY_SYSTEMD_UNITS = os.path.join(os.path.sep, "etc", "systemd", "system")
+
+SYSTEMD_RUN_BIN = os.path.join(os.path.sep, "bin", "systemd-run")
 
 
 def reload_manager(f: F) -> F:
@@ -182,3 +190,50 @@ class Unit:
         E.g.: `firewall` -> `firewall.service`
         """
         return unit_name + "." + unit_type
+
+
+class TransientUnit:
+    """Represents transient unit created via systemd-run."""
+
+    def __init__(self, unit: Unit) -> None:
+        """Set attributes."""
+        self.unit = unit
+
+    @classmethod
+    def run(cls, name: str, command: List[str]) -> "TransientUnit":
+        """Start transient unit and return an instance wrapping the created unit."""
+        output = subprocess.run(
+            [
+                SYSTEMD_RUN_BIN,
+                "--json=short",
+                f"--unit={name}",
+                "--remain-after-exit",
+                *command,
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            text=True,
+        ).stdout
+
+        return cls(Unit(json.loads(output)["unit"]))
+
+    def clean_up(self) -> None:
+        """Stop unit if active, or reset it if failed."""
+        sub_state = self.unit.get_property("SubState")
+
+        # A finished --remain-after-exit unit is either `exited` (success) or
+        # `failed`. Any other value means the unit is still `running`, or in
+        # some other state we don't handle — bail out so it can be debugged
+        # manually rather than silently tearing it down.
+
+        if sub_state not in (SubState.EXITED, SubState.FAILED):
+            raise UnexpectedSubStateError(self.unit.name, sub_state)
+
+        active_state = self.unit.get_property("ActiveState")
+
+        if active_state == ActiveState.ACTIVE:
+            subprocess.run([SYSTEMCTL_BIN, "stop", self.unit.name], check=True)
+        elif active_state == ActiveState.FAILED:
+            subprocess.run([SYSTEMCTL_BIN, "reset-failed", self.unit.name], check=True)
+        else:
+            raise UnexpectedActiveStateError(self.unit.name, active_state)

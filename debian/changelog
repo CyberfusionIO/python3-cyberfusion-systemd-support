@@ -1,3 +1,9 @@
+python3-cyberfusion-systemd-support (2.5.0) unstable; urgency=low
+
+  - Add TransientUnit for systemd-run transient units
+
+ -- William Edwards <wedwards@cyberfusion.nl>  Tue, 21 Jul 2026 19:35:00 +0200
+
 python3-cyberfusion-systemd-support (2.4.0) unstable; urgency=low
 
   - Add `Unit.get_unit_file`
