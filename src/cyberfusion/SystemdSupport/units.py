@@ -217,6 +217,40 @@ class TransientUnit:
 
         return cls(Unit(json.loads(output)["unit"]))
 
+    @classmethod
+    def run_sync(
+        cls,
+        name: str,
+        command: List[str],
+        *,
+        properties: dict[str, str] | None = None,
+        input_: str | None = None,
+    ) -> str:
+        """Start transient unit, wait for it to finish, and return stdout."""
+        arguments = [
+            SYSTEMD_RUN_BIN,
+            f"--unit={name}",
+            # "Wait for the transient service to terminate"
+            "--wait",
+            # "Unload the transient unit after it completed, even if it failed"
+            "--collect",
+            # "standard input, output, and error of the transient service are inherited from the systemd-run command itself"
+            # Needed to pass stdin
+            "--pipe",
+        ]
+
+        if properties:
+            for property_name, property_value in properties.items():
+                arguments.append(f"--property={property_name}={property_value}")
+
+        arguments.extend(command)
+
+        output = subprocess.run(
+            arguments, check=True, stdout=subprocess.PIPE, text=True, input=input_
+        ).stdout
+
+        return output
+
     def clean_up(self) -> None:
         """Stop unit if active, or reset it if failed."""
         sub_state = self.unit.get_property("SubState")

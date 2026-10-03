@@ -1,3 +1,9 @@
+python3-cyberfusion-systemd-support (2.6) unstable; urgency=medium
+
+  * Allow synchronously running transient unit
+
+ -- William Edwards <wedwards@cyberfusion.nl>  Sat, 03 Oct 2026 22:30:00 +0000
+
 python3-cyberfusion-systemd-support (2.5.1) unstable; urgency=medium
 
   * Don't pin library versions to exact versions
