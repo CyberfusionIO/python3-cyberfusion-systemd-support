@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python3-cyberfusion-systemd-support"
-version = "2.5.1"
+version = "2.6"
 description = "Library for systemd."
 readme = "README.md"
 authors = [
