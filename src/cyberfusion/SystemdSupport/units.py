@@ -240,13 +240,21 @@ class TransientUnit:
         ]
 
         if properties:
-            for property_name, property_value in properties.items():
-                arguments.append(f"--property={property_name}={property_value}")
+            for property_name, property_values in properties.items():
+                for property_value in property_values:
+                    arguments.extend(
+                        ["--property", f"{property_name}={property_value}"]
+                    )
 
         arguments.extend(command)
 
         output = subprocess.run(
-            arguments, check=True, stdout=subprocess.PIPE, text=True, input=input_
+            arguments,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            input=input_,
         ).stdout
 
         return output
